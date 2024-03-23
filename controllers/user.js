@@ -1,4 +1,3 @@
-
 const User = require("../models/userModel")
 
 // Controller function to create a new user
@@ -11,9 +10,6 @@ exports.register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'User with this email already exists' });
         }
-
-        // Hash the password
-        // const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user object
         const newUser = new User({ name, email, password, confirmPassword, phoneNumber, work });
