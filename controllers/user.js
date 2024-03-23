@@ -1,4 +1,5 @@
 const User = require("../models/userModel")
+const bcrypt = require("bcrypt")
 
 // Controller function to create a new user
 exports.register = async (req, res) => {
@@ -36,11 +37,21 @@ exports.login = async (req, res) => {
             return res.status(400).json({ message: 'User not found' });
         }
 
-        // Check if the provided password matches the stored password
-        if (password !== user.password) {
+        // Compare the provided password with the hashed password
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid password' });
         }
 
+        // Generate JWT token
+        const token = user.generateAuthToken();
+        // console.log(token)
+
+        // Store token in cookie
+        res.cookie('authToken', token, {
+            maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 24 hours
+            httpOnly: true // Cookie is accessible only through HTTP(S) requests
+        });
         // If both email and password are correct, respond with user information
         res.status(200).json({ message: 'Login successful', user });
     } catch (error) {
