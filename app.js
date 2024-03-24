@@ -18,7 +18,11 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(cors())
+// Enable CORS middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with the origin of your frontend application
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
