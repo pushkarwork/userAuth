@@ -9,7 +9,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-const db = require("./database/db")
+const db = require("./database/db");
+const authenticateUser = require('./middleware/authenticate');
 db();
 
 // view engine setup
@@ -23,8 +24,9 @@ app.use(cors({
   origin: 'http://localhost:5173', // Replace with the origin of your frontend application
   credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
+// app.use(authenticateUser)
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

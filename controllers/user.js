@@ -59,5 +59,7 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
-
+exports.ran = async (req, res) => {
+    console.log( "hi from res")
+    res.send("hi from random page")
+}
